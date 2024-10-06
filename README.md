@@ -37,7 +37,7 @@ This exercise is devoted to get familiarized with Arduino IDE platform to execut
 
 1. *Reading an ultrasonic distance sensor:* On this exercise is connected an ultrasonic sensor to Arduino UNO and, after set a request to sensor, it must be possible to read the pulse width received from the sensor via a digital input and convert into the sensed distance the sensor is perceiving. It has an optional approach to obtain this distance without using the Arduino function *pulseIn()*.
 
-![Ex1_UltraSound_Test.webm](P1/Videos/Ex1_UltraSound_Test.webm)
+[Ex1_UltraSound_Test.webm](P1/Videos/Ex1_UltraSound_Test.webm)
 
 1. *Reading a linear temperature sensor:* Here Arduino UNO is connected to an LM35 linear temperature sensor from where its sensed temperature is received via an analog input and converted to temperature using formula from manufacturer.
 
