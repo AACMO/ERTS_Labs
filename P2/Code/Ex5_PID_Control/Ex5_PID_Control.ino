@@ -145,7 +145,7 @@ void loop()
   cont_err[1] = cont_err[0];
   cont_err[0] = err_fb;
   prev_cont = u;
-  //Serial.print(u);Serial.print(",");Serial.print(meas_vel);Serial.print(",");Serial.print(err_fb);Serial.print(",");Serial.print(pwm_val);Serial.print(",");
+
   // Print last values before changing anything
   Serial.print("rpm_setpoint:");Serial.print(rpm_val);Serial.print(",");Serial.print("meas_speed[rpm]:");Serial.println(meas_vel); 
 
