@@ -1,3 +1,7 @@
+// EMBEDDED AND REAL-TIME SYSTEMS - LABORATORY L3
+// Alejandro Acosta, Ivan Barrachina and Victor Escribano
+// Exercise 2: Controlling fan speed with ultrasound sensor reading
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
