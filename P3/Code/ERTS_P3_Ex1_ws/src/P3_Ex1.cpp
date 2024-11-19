@@ -113,16 +113,17 @@ ISR(TIMER0_OVF_vect)
 // To handle timer 1 output compare match A interrupt
 ISR(TIMER1_COMPA_vect)
 {   
-  // Check if PWM duty cycle value is already exceeding the maximum allowed value and reset the value if necessary
-  if (pwm_duty_cycle >= MAX_PWM_VALUE) {pwm_duty_cycle=0;}
-  // Do nothing otherwise, defensive else
-  else{}
   // Increase the PWM duty cycle on each overflow event
-  pwm_duty_cycle += (uint8_t)PWM_STEP_INC;
+  static uint16_t pwm_counter = 0;
+  pwm_counter += (uint8_t)PWM_STEP_INC;
+  // Check if PWM duty cycle value to be assigned is already exceeding the maximum allowed value and reset the value if necessary
+  if (pwm_counter > MAX_PWM_VALUE) {pwm_duty_cycle=0;pwm_counter=0;}
+  // Otherwise, just assign to the PWM duty cycle variable the already counted one on this cycle.
+  else{pwm_duty_cycle = (uint8_t)pwm_counter;}
 
   // Only send data via serial port if Arduino IDE is being used
   #ifdef ARDUINO_IDE
   // Send via the serial port data about measurements and PWM duty cycle imposed each 500 ms
-  Serial.print(sensed_dist);Serial.print(";");Serial.println(pwm_duty_cycle); 
-  #endif   
+  Serial.print("PWM_value:");Serial.println(pwm_duty_cycle); 
+  #endif     
 }
