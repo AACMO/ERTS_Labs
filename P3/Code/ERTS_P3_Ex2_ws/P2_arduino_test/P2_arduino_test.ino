@@ -21,7 +21,6 @@
 
 // Start all global variables definition for the code
 // ----------------------------------------------------------------------------------------------------//
-uint8_t meas_done = 0;                            // Flag to store when a new value of the PWM can be processed after a full cycling measurement is done
 float sensed_dist = 0;                            // Variable to store the results of measured distance from the ultrasonic sensor
 
 // Start set up function for the code
@@ -68,7 +67,6 @@ void setup_init()
   TCCR0A |= (1<<COM0A1);                            // Clear OC0A on compare Match and set OC0A at bottom again when timer overflows      
   TCCR0B |= (1<<CS01);                              // Set TC0 prescaler at value 8
   OCR0A = 0x00;                                     // Set initially output compare value A for the timer 0 OCR0 to 0.
-  TIMSK0 |= (1<<TOIE0);                             // Set timer 0 overflow interrupt enabled
 
   // Initialize counter timer 1 (TC1) for counting time precisely
   /****************************************************************************************************
@@ -124,31 +122,6 @@ int main()
 
 // Start definition of all ISR functions necessary for the code
 // ----------------------------------------------------------------------------------------------------//
-// To handle timer 0 overflow interrupt
-ISR(TIMER0_OVF_vect)
-{ 
-  static uint8_t pwm_duty_cycle = 0;                            // Variable to store the actual duty cycle to impose on PWM on each loop
-
-  // Only attempt to update OCR0A value if there is a measurement pending to be checked
-  if (meas_done == 1)
-  {
-    // Set flag to 0 again
-    meas_done = 0;
-    
-    // Limit the output depending on results given
-    if (sensed_dist > MAX_DIST){sensed_dist=MAX_DIST;}
-    else if (sensed_dist < MIN_DIST){sensed_dist=MIN_DIST;}
-    else{}
-  
-    // Change PWM value depending on the sensed distance 
-    pwm_duty_cycle = MAX_PWM_VALUE*((sensed_dist - MIN_DIST)/(MAX_DIST - MIN_DIST));
-    // Assign the new value to the output compare match A register to increase duty cycle on next counting
-    OCR0A = pwm_duty_cycle;
-  }
-  // Do nothing otherwise, protective else
-  else{}
-}
-
 // To handle timer 1 output compare match A interrupt (each 100 ms)
 ISR(TIMER1_COMPA_vect)
 {  
@@ -162,7 +135,7 @@ ISR(TIMER1_COMPA_vect)
   if (print_count == 5)
   { 
     // Send via the serial port data about measurements and PWM duty cycle imposed each 500 ms
-    Serial.print(sensed_dist);Serial.print(";");Serial.println(OCR0A); 
+    Serial.print("distance[cm]:");Serial.print(sensed_dist);Serial.print(",");Serial.print("PWM_value:");Serial.println(OCR0A); 
     // Set the flag again to 0
     print_count = 0;
   }
@@ -197,7 +170,6 @@ ISR(TIMER1_CAPT_vect)
     trigger_raised = 0;                             // Reset the flag to get a new rising edge detected
     timestamps[1] = ICR1;                           // Store the timer time for the falling edge detection
     TCCR1B |= (1<<ICES1);                           // Set the ICES1 to get the new measurement on a rising edge (set to 1)
-    meas_done = 1;                                  // Set the flag that a full measurement cycle is done
     
     // Compute new sensed distance depending on values obtained from timestamps
     if (timestamps[0]<=timestamps[1])
@@ -213,6 +185,14 @@ ISR(TIMER1_CAPT_vect)
       // Now compute the sensed distance properly
       sensed_dist = TIMER1_FREQ*(diff_count-timestamps[0])/(SENSOR_CONST);
     }
+    // Limit the output depending on results given
+    if (sensed_dist > MAX_DIST){sensed_dist=MAX_DIST;}
+    else if (sensed_dist < MIN_DIST){sensed_dist=MIN_DIST;}
+    else{}
+    
+    // Assign the new value to the output compare match A register to increase duty cycle on next counting
+    OCR0A = (uint8_t) (MAX_PWM_VALUE*((sensed_dist - MIN_DIST)/(MAX_DIST - MIN_DIST)));
+    
     // Reset values on timestamps at the end
     timestamps[0]=0; timestamps[1] = 0;
   }
