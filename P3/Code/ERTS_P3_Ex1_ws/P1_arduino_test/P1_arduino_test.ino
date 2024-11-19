@@ -58,7 +58,6 @@ void setup_init()
   TCCR0A |= (1<<COM0A1);                         // Clear OC0A on compare Match and set OC0A at bottom again when timer overflows      
   TCCR0B |= (1<<CS01);                           // Set TC0 prescaler at value 8
   OCR0A = 0x00;                                  // Set initially output compare value for the timer 0 OCR0 to 0.
-  TIMSK0 |= (1<<TOIE0);                          // Set timer 0 overflow interrupt enabled
 
   // Initialize counter timer 1 (TC1) for counting time precisely
   /****************************************************************************************************
@@ -103,13 +102,6 @@ int main()
 
 // Start definition of all ISR functions necessary for the code
 // ----------------------------------------------------------------------------------------------------//
-// To handle timer 0 overflow interrupt
-ISR(TIMER0_OVF_vect)
-{                
-  // Assign the new value to the output compare match A register to increase duty cycle on next counting
-  OCR0A = pwm_duty_cycle;
-}
-
 // To handle timer 1 output compare match A interrupt
 ISR(TIMER1_COMPA_vect)
 {   
@@ -121,9 +113,12 @@ ISR(TIMER1_COMPA_vect)
   // Otherwise, just assign to the PWM duty cycle variable the already counted one on this cycle.
   else{pwm_duty_cycle = (uint8_t)pwm_counter;}
 
+  // Assign the new value to the output compare match A register to increase duty cycle on next counting
+  OCR0A = pwm_duty_cycle;
+
   // Only send data via serial port if Arduino IDE is being used
   #ifdef ARDUINO_IDE
   // Send via the serial port data about measurements and PWM duty cycle imposed each 500 ms
   Serial.print("PWM_value:");Serial.println(pwm_duty_cycle); 
-  #endif   
+  #endif     
 }
