@@ -92,7 +92,7 @@ A set of 2 simple exercises have been proposed to start working with a MCU such 
       duty_cycle = timer_tick_period*(diff_between_pulses)/(SENSOR_CONST)
       $$ 
       
-      Where variable $timer_tick_period$ is a constant of 4 $\mu s$ that depends on timer 1 configuration and defines the time between 2 consecutive ticks for that timer, the $diff_between_pulses$ is the difference in timer ticks between the raising and falling edge of the ECHO signal from the sensor and $SENSOR_CONST$ is the constant of 58 $\mu s$/cm defined in sensor datasheet for conversions. 
+      Where variable *timer_tick_period* is a constant of 4 $\mu s$ that depends on timer 1 configuration and defines the time between 2 consecutive ticks for that timer, the *diff_between_pulses* is the difference in timer ticks between the raising and falling edge of the ECHO signal from the sensor and *SENSOR_CONST* is the constant of 58 $\mu s$/cm defined in sensor datasheet for conversions. 
 
       Next for the completion of this exercise, there are 3 interrupts enabled for timer 1 as follows: 
       - **Output Compare Match A interrupt:** triggers every every 100 ms to start a new sensor ultrasonic sensor reading by setting TRIG pin on ultrasonic sensor to 1.
