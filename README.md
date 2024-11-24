@@ -75,9 +75,7 @@ Once all this requirements are fulfilled, it will be necessary to give to Eclips
 A set of 2 simple exercises have been proposed to start working with a MCU such that ATmega328P and understand how basic units such as timers and interrupts work on this microcontroller: 
 
 1. *Controlling a computer fan:*  This exercise attempt to send a PWM signal controlled by timer 0 on ATmega328P to a computer fan on the range between 30 Hz - 300 kHz. The proposed solution sends this PWM signal with a frequency of 7.8 kHz according to timer 0 set up and it is changing the value of the PWM duty cycle for the signal every 1s according to specifications by increasing the PWM duty cycle 15 units. Then, every 17s there is an overflow on the signal and it starts again by 0 PWM duty cycle. 
-  
 On this solution it is also used timer 1 to generate interrupts that triggers every 1s so that it can be changed the signal for the PWM duty cycle on every timer 1 interrupt and fulfil problem specifications. It cannot be used any of the built - in Arduino functions such that **_delay_ms()** for timing purposes. 
-
 The results of such exercise code are found on the following image:
 
 ![Demonstration exercise 1](/P3/Images/Ex3_Test_P1_PWM.jpg)
