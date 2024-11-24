@@ -87,8 +87,10 @@ A set of 2 simple exercises have been proposed to start working with a MCU such 
 2. *Reading the ultrasonic sensor:* The second exercise is devoted to control the fan with the same PWM signal as used on exercise 1 but this time the PWM duty cicle is not increased every second a fixed step. Instead, the PWM duty cycle is adjusted constantly proportional to the reading of the ultrasonic sensor that is read with ICU from timer 1 every 100 ms. 
 
       Moreover, the used ultrasonic sensor as described in Laboratory Session 1 works on the range from 2 cm to 400 cm. However, for this session it has been restricted the maximum distance to 150 cm so that if the sensor reading reaches this maximum distance the duty cycle for the PWM signal will be the maximum value (255). Hence the equation to set the PWM signal value according to measured sensor distance is as follows: 
-
-      ![](/P3/Utils/Equation_duty_cycle.jpg)
+      
+      <p align="center">
+        <img src="P3/Utils/Equation_duty_cycle.jpg" alt="Image" />
+      </p>
       
       Where variable *timer_tick_period* is a constant of 4 $\mu s$ that depends on timer 1 configuration and defines the time between 2 consecutive ticks for that timer, the *diff_between_pulses* is the difference in timer ticks between the raising and falling edge of the ECHO signal from the sensor and *SENSOR_CONST* is the constant of 58 $\mu s$/cm defined in sensor datasheet for conversions. 
 
