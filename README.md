@@ -96,7 +96,7 @@ This exercise is devoted to test some standard and well - known control strategi
 
     Where it can be seen from results that timings are appropriately adjusted and a step response is presented.
 
-    Finally, all data gathered is opened on an Excel and it is able to obtain the following results shown on the following snapshots for the temporal static and dynamic system response respectively: 
+    Finally, all data gathered is opened on an Excel and it is able to obtain the following results shown on the following snapshots for the temporal static and dynamic system  response respectively: 
 
     ![Static response fan](/P2/Images/Ex2_static.png)
     ![Dynamic response fan](/P2/Images/Ex2_temp_response.png)
@@ -107,9 +107,9 @@ This exercise is devoted to test some standard and well - known control strategi
       <img src="P2/Utils/Equation_des_speed.jpg" alt="Image" />
     </p>
 
-    All data from where all these previous results are obtained can be found at **Utils** folder inside the Excel sheet called *Data_FanResponse.xlsx* where serial monitor output data from Arduino is analyzed
+    All data from where all these previous results are obtained can be found at **Utils** folder inside the Excel sheet called *Data_FanResponse.xlsx* where serial monitor output data from Arduino is analyzed. Finally, the response time for the system is determined to be as the settling time, which in average it has been stablished to be $t_{ss}@98\% = 1.33s$
 
-3. *Feedforward control*
+3. *Feedforward control:*
 4. *Feedforward + feedback control*
 5. *PID Control*
 
