@@ -107,7 +107,7 @@ This exercise is devoted to test some standard and well - known control strategi
       <img src="P2/Utils/Equation_des_speed.jpg" alt="Image" />
     </p>
 
-    All data from where all these previous results are obtained can be found at **Utils** folder inside the Excel sheet called *Data_FanResponse.xlsx* where serial monitor output data from Arduino is analyzed. Finally, the response time for the system is determined to be as the settling time, which in average it has been stablished to be $t_{ss}@98\% = 1.33s$
+    All data from where all these previous results are obtained can be found at **Utils** folder inside the Excel sheet called *Data_FanResponse.xlsx* where serial monitor output data from Arduino is analyzed. Finally, the response time for the system is determined to be as the settling time, which in average it has been stablished to be $t_{ss} at 98\% = 1.33s$.
 
 3. *Feedforward control:*
 4. *Feedforward + feedback control*
