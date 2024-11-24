@@ -129,7 +129,7 @@ This exercise is devoted to test some standard and well - known control strategi
 
 5. *PID Control:* The last control algorithm proposed attempts to tackle the problems presented on exercise 3 and 4 by adding an integral and a derivative gain to the already proportional gain given. With this new scheme, this control action must be able to correct the constant steady state error on the previous approaches because there was no integral action to help correcting that. Apart from that, it is also removed the feedforward gain and it is only used the PID control to set up the control action.
 
-    Then, on this proposed scheme, every 50 ms it is asssessed if the setpoint needs to be changed from 2000 to 3000 rpms or the other way arround, the fan speed received from F00 sensor on pin 7 (PD7) is computed and the new control action *u* is found from error between setpoint and actual speed sensor. Finally, at the end of the control loop the new control action is sent to the computer fan via pin 3 (PD3) with the PWM signal. 
+    Then, on this proposed scheme, every 50 ms it is assessed if the setpoint needs to be changed from 2000 to 3000 rpms or the other way arround, the fan speed received from F00 sensor on pin 7 (PD7) is computed and the new control action *u* is found from error between setpoint and actual speed sensor. Finally, at the end of the control loop the new control action is sent to the computer fan via pin 3 (PD3) with the PWM signal. 
 
     The formula used to compute the discrete PID control action at each control loop is stated as follows: 
 
