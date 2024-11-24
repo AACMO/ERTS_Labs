@@ -82,6 +82,27 @@ A set of 2 simple exercises have been proposed to start working with a MCU such 
  
       ![Demonstration exercise 1](/P3/Images/Ex3_Test_P1_PWM.jpg)
  
-      And a video with demo results can be found at repository [here](/P3/Videos/P3_Ex2_Demo.mp4)
+      And a video with demo results can be found at repository [here](/P3/Videos/P3_Ex1_Demo.MOV)
 
-2. *Reading the ultrasonic sensor:* The second exercise is devoted to control 
+2. *Reading the ultrasonic sensor:* The second exercise is devoted to control the fan with the same PWM signal as used on exercise 1 but this time the PWM duty cicle is not increased every second a fixed step. Instead, the PWM duty cycle is adjusted constantly proportional to the reading of the ultrasonic sensor that is read with ICU from timer 1 every 100 ms. 
+
+      Moreover, the used ultrasonic sensor as described in Laboratory Session 1 works on the range from 2 cm to 400 cm. However, for this session it has been restricted the maximum distance to 150 cm so that if the sensor reading reaches this maximum distance the duty cycle for the PWM signal will be the maximum value (255). Hence the equation to set the PWM signal value according to measured sensor distance is as follows: 
+
+      $$
+      duty\_cycle = timer\_tick\_period*(diff\_between\_pulses)/(SENSOR\_CONST)
+      $$ 
+      
+      Where variable $timer\_tick\_period$ is a constant of 4 $\mu s$ that depends on timer 1 configuration and defines the time between 2 consecutive ticks for that timer, the $diff\_between\_pulses$ is the difference in timer ticks between the raising and falling edge of the ECHO signal from the sensor and $SENSOR\_CONST$ is the constant of 58 $\mu s$/cm defined in sensor datasheet for conversions. 
+
+      Next for the completion of this exercise, there are 3 interrupts enabled for timer 1 as follows: 
+      - **Output Compare Match A interrupt:** triggers every every 100 ms to start a new sensor ultrasonic sensor reading by setting TRIG pin on ultrasonic sensor to 1.
+      -  **Output Compare Match B interrupt:** Triggered 12 $\mu s$ after the Output Compare Match A has been triggered to reset TRIG pin on ultrasonic sensor to 0.
+      -  **Input Capture Unit interrupt:** To capture initially a raising edge on ECHO pin from ultrasonic sensor and then the falling edge of that pin so that it can be obtained the whole pulse duration that is proportional to distance from sensor to the obstacle. 
+      
+      For timer 0 there is no interrupt configured on this exercise since it is just used to generate the PWM signal according to measured distance from sensor.
+
+      The results of such exercise code are found on the following image:
+ 
+      ![Demonstration exercise 2](/P3/Images/Ex3_Test_P2_sensor.jpg)
+
+      And a video with demo results can be found at repository [here](/P3/Videos/P3_Ex2_Demo.mp4)
