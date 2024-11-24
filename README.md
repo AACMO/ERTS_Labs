@@ -89,10 +89,10 @@ A set of 2 simple exercises have been proposed to start working with a MCU such 
       Moreover, the used ultrasonic sensor as described in Laboratory Session 1 works on the range from 2 cm to 400 cm. However, for this session it has been restricted the maximum distance to 150 cm so that if the sensor reading reaches this maximum distance the duty cycle for the PWM signal will be the maximum value (255). Hence the equation to set the PWM signal value according to measured sensor distance is as follows: 
 
       $$
-      duty\_cycle = timer\_tick\_period*(diff\_between\_pulses)/(SENSOR\_CONST)
+      duty_cycle = timer_tick_period*(diff_between_pulses)/(SENSOR_CONST)
       $$ 
       
-      Where variable $timer\_tick\_period$ is a constant of 4 $\mu s$ that depends on timer 1 configuration and defines the time between 2 consecutive ticks for that timer, the $diff\_between\_pulses$ is the difference in timer ticks between the raising and falling edge of the ECHO signal from the sensor and $SENSOR\_CONST$ is the constant of 58 $\mu s$/cm defined in sensor datasheet for conversions. 
+      Where variable $timer_tick_period$ is a constant of 4 $\mu s$ that depends on timer 1 configuration and defines the time between 2 consecutive ticks for that timer, the $diff_between_pulses$ is the difference in timer ticks between the raising and falling edge of the ECHO signal from the sensor and $SENSOR_CONST$ is the constant of 58 $\mu s$/cm defined in sensor datasheet for conversions. 
 
       Next for the completion of this exercise, there are 3 interrupts enabled for timer 1 as follows: 
       - **Output Compare Match A interrupt:** triggers every every 100 ms to start a new sensor ultrasonic sensor reading by setting TRIG pin on ultrasonic sensor to 1.
@@ -101,7 +101,7 @@ A set of 2 simple exercises have been proposed to start working with a MCU such 
       
       For timer 0 there is no interrupt configured on this exercise since it is just used to generate the PWM signal according to measured distance from sensor.
 
-      The results of such exercise code are found on the following image:
+      The results of such exercise code are found on the following image, where it can be seen that the PWM signal increases proportional to the measured distance from the sensor according to specifications (blue the measured distance, red the PWM value send to fan)
  
       ![Demonstration exercise 2](/P3/Images/Ex3_Test_P2_sensor.jpg)
 
