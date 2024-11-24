@@ -109,9 +109,37 @@ This exercise is devoted to test some standard and well - known control strategi
 
     All data from where all these previous results are obtained can be found at **Utils** folder inside the Excel sheet called *Data_FanResponse.xlsx* where serial monitor output data from Arduino is analyzed. Finally, the response time for the system is determined to be as the settling time, which in average it has been stablished to be $t_{ss}$ at 98\% equal to $t_{ss} =1.33s$.
 
-3. *Feedforward control:*
-4. *Feedforward + feedback control*
-5. *PID Control*
+3. *Feedforward control:* On this exercise is proposed to control the computer fan speed directly using only a feedforward gain based on the equation found on previous exercise with the static curve relating the PWM value to be placed to achieve the desired fan speed. Then, on this exercise it is send via pin 3 (PD3) a PWM value that is adapted depending on a setpoint speed that varies every 10 s on the control loop between  the 2000 and 3000 rpm values and it is read on each control loop (every 50 ms) the speed of the sensor via pin 7 (PD7) using the F00 sensor information from the computer fan. 
+
+    The results of this simple exercise can be found on the following snapshot from Arduino plotter that displays the setpoint speed against the read speed at each control loop, where it can be seen the response is quite satisfying, but the controller fails when reducing the steady state error since there is always a constant shift between the setpoint and the final speed value. 
+
+    ![Demonstration fan speed Ex3](/P2/Images/Ex3_ff_test.jpg)
+
+    And also the video demo with the results for this exercise can be found at repository [here](/P2/Videos/Ex3_ff_control_Demo.MOV).
+   
+4. *Feedforward + feedback control:* The following proposed exercise is based on the previous workflow described on exercise 3, but now it is added to the control scheme also a feedback control with only proportional gain that attempts to correct the error between the speed setpoint and the actual speed sensed from F00 sensor. 
+   
+    On this approach, the value of the **K** gain to use on the feedback control is set up experimentally by trial and error until a suitable value in terms of performance and stability is achieved.
+
+    The results of this exercise can be found on the following snapshot from Arduino plotter that displays the setpoint speed against the read speed at each control loop, where it can be seen that the results obtained are better than the ones obtained with only the feedforward control since it sometimes exceeds the setpoint with some overshoot instead of remaining always behind the reference with a constant steady state error.
+
+    ![Demonstration fan speed Ex4](/P2/Images/Ex4_ff+fb_test2.jpg)
+
+    The video demo with the results for this exercise can be found at repository [here](/P2/Videos/Ex4_ff_fb_control_Demo.MOV).
+
+5. *PID Control:* The last control algorithm proposed attempts to tackle the problems presented on exercise 3 and 4 by adding an integral and a derivative gain to the already proportional gain given. With this new scheme, this control action must be able to correct the constant steady state error on the previous approaches because there was no integral action to help correcting that. Apart from that, it is also removed the feedforward gain and it is only used the PID control to set up the control action.
+
+    Then, on this proposed scheme, every 50 ms it is asssessed if the setpoint needs to be changed from 2000 to 3000 rpms or the other way arround, the fan speed received from F00 sensor on pin 7 (PD7) is computed and the new control action *u* is found from error between setpoint and actual speed sensor. Finally, at the end of the control loop the new control action is sent to the computer fan via pin 3 (PD3) with the PWM signal. 
+
+    The formula used to compute the discrete PID control action at each control loop is stated as follows: 
+
+    ![PID formula](/P2/Images/PID_formula.jpg)
+
+    Finally the results of this exercise can be found on the following snapshot from Arduino plotter that displays the setpoint speed against the read speed at each control loop, where it can be seen this controller outperforms approaches presented in exercises 3 and 4 because it allows to get a steady state error equal to 0 in average when reaching the end of the transient. 
+
+    ![Demonstration PID control Ex5](/P2/Images/Ex5_PID_TEST_2.jpg)
+
+    The video demo with the results for this exercise can be found at repository [here](/P2/Videos/Ex5_PID_control_Demo.MOV).
 
 ## Laboratory session 3: Programming the ATmega328P in C with Eclipse
 
