@@ -75,8 +75,40 @@ This exercise is devoted to get familiarized with Arduino IDE platform to execut
 
 This exercise is devoted to test some standard and well - known control strategies on Arduino Uno platform to control the computer fan. Then, a set of 5 exercises are proposed to check these controls and make a comparison between them:
 
-1. *ON/OFF temperature control*
-2. *Characterization of fan response*
+1. *ON/OFF temperature control:* The computer fan is controlled depending on the temperature sensed by the *LM35* temperature sensor with to control temperature to be around 25 ºC constantly. Then, an hysteresis control is programmed with 1ºC hysteresis step that contains just 2 basic states as follows: 
+    - **The computer fan is ON:** When temperature sensed by *LM35* is over 26 ºC (25 ºC + the hysteresis step). At this control state the PWM duty cycle signal sent to the fan is constantly set to a value of 200 through pin PD3 (Arduino Uno pin 3). This value of PWM is really high, so it seems to drive the fan almost at maximum speed and for this reason it can be understood as ON state for the fan. 
+    - **The computer fan is OFF:** When the temperature sensed by *LM35* is under 24 ºC (25 ºC + the hysteresis step). At this control state the PWM duty cycle signal sent to the fan is constantly set to a value of 25 through pin PD3 (Arduino Uno pin 3). This value of PWM is too small to activate the computer fan and for this reason it can be understood as OFF state for the fan. 
+
+    On this program sensor value is read through analog pin in Arduino Uno at pin 16 (pin PC2) and the conversion given on datasheet is done to convert the digital value obtained directly to temperature in degrees Celsius.
+
+    The Arduino plotter snapshot with results for this exercise is found below for the triggering of the OFF state and for the triggering of the ON state for the PWM fan with this control respectively. It can be seen that it appropriately reacts against temperature sensor reading from *LM35* and works as expected.
+
+    ![Demonstration exercise 1 ON](/P2/Images/Ex1_tst1.jpg)
+    ![Demonstration exercise 1 OFF](/P2/Images/Ex1_tst2.jpg)
+
+    The video demo with the results for this exercise can be found at repository [here](/P2/Videos/Ex1_ONOFF_Demo.MOV).
+ 
+2. *Characterization of fan response:* On this exercise is aimed to determine the fan response against the PWM input signal given from the Arduino Uno controller through pin 3 (PD3). Therefore, it is willing to determine the input - output static and dynamic response of the computer fan when a PWM input signal is sent and it is read the fan speed in rpms for every PWM input signal placed. For that purpose, 5 steps are programmed where the PWM value is increased by a value of 50 units so that it reaches value 250 at the end of the last step. Therefore, to get the appropriate data it is waited between each step 5 seconds so that enough samples are gathered every 50 ms on each step with the defined PWM value and to allow the speed of the computer fan to be stabilized on each step appropriately.
+  
+    Additionally, through pin 7 (pin PD7) it is obtained the measurement of the speed signal from the F00 sensor inside the computer fan and both the PWM value and the read speed signal from the computer fan sensor are output through serial monitor every 50 ms to gather all data and post - process it properly later on. All output serial monitor data has been captured on a *txt* file called *Ex2_Fan_Response.txt* stored in **Utils** folder. The results for the steps imposed to the computer fan are presented on the following image:
+
+    ![Demonstration step response Ex2](/P2/Images/Ex2_test_sysidentification.jpg)
+
+    Where it can be seen from results that timings are appropriately adjusted and a step response is presented.
+
+    Finally, all data gathered is opened on an Excel and it is able to obtain the following results shown on the following snapshots for the temporal static and dynamic system response respectively: 
+
+    ![Static response fan](/P2/Images/Ex2_static.png)
+    ![Dynamic response fan](/P2/Images/Ex2_temp_response.png)
+    
+    And from given previous static response it has been possible to determine experimentally the static curve that relates the value of PWM to be input to the system to achieve a desired speed as follows: 
+
+    <p align="center">
+      <img src="P2/Utils/Equation_des_speed.jpg" alt="Image" />
+    </p>
+
+    All data from where all these previous results are obtained can be found at **Utils** folder inside the Excel sheet called *Data_FanResponse.xlsx* where serial monitor output data from Arduino is analyzed
+
 3. *Feedforward control*
 4. *Feedforward + feedback control*
 5. *PID Control*
@@ -85,12 +117,11 @@ This exercise is devoted to test some standard and well - known control strategi
 
 This exercise is devoted to understanding the basics of programming the Arduino Uno microcontroller (ATmega328P) using a professional IDE and via direct C programming code that will access to the direct hardware and MCU registers without using any built - in function given by Arduino IDE. The session will be focused on programming different timers and interrupts to read sensors and actuate over a computer fan via a PWM signal directly steering the register that contains the value of PWM to be imposed on the computer fan.  
 
-# Initial requirements: 
+### Initial requirements: 
 
 To complete this laboratory session, it will be necessary to first of all install all necessary programs and dependencies listed below: 
 
-1. AVR toolchain. To get all necessary libraries to work with the ATmega328P microcontroller. It can be downloaded from [here](https://www.microchip.com/en-us/development-tools-tools-and-software/gcc-compilers-avr-and-arm.
-arm). It is only necessary to download file and copy files inside **C:\Program Files**. 
+1. AVR toolchain. To get all necessary libraries to work with the ATmega328P microcontroller. It can be downloaded from [here](https://www.microchip.com/en-us/development-tools-tools-and-software/gcc-compilers-avr-and-arm). It is only necessary to download file and copy files inside **C:\Program Files**. 
 2. GNU Make. It is necessary to install this GNU compiler for Windows systems from [here](http://gnuwin32.sourceforge.net/packages/make.htm). Finally, launch the installer and accept the default location to install it at **C:\Program Files (x86)\GNUWin32**.
 3. AVR programmer. To be able to download/upload and manage the MCU memory. It can be downloaded AVRDUDE from [here](http://fab.cba.mit.edu/classes/863.16/doc/projects/ftsmin/avrdude-win-64bit.zip). Once it is downloaded, just unzip the file and copy all the content at location **C:\Program Files**.
 4. Eclipse. The IDE that will be used to program the different code solutions along the session. It can be downloaded from [here](https://www.eclipse.org/). Alternative to eclipse can be to download extension called *Platformio* from Visual Studio Code if this environment is already installed on the computer.
@@ -98,7 +129,7 @@ arm). It is only necessary to download file and copy files inside **C:\Program F
 
 Once all this requirements are fulfilled, it will be necessary to give to Eclipse the path to all installed external tools for the program on the menu dialog *Window -> Preferences* and once within that window go to option *AVR -> Paths*. Give at that menu the path to the already installed AVR toolchain, GNU and AVRDUDE.
 
-# Proposed exercises:
+### Proposed exercises:
 
 A set of 2 simple exercises have been proposed to start working with a MCU such that ATmega328P and understand how basic units such as timers and interrupts work on this microcontroller: 
 
