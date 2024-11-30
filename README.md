@@ -266,13 +266,13 @@ The conducted experiment is presented below:
 
 Then, from experiment done the following statistical results are shown for task 2 (control loop task) computing time and task cycle time:
 
-| **Statistical feature**     | **Value - Computing time task 2** | **Value - Cycle time task 2** |
-|-----------------------------|-----------------------------------|-------------------------------|
-| Max value [ms]              | 86.850                            | 105.000                       |
-| Min value [ms]              | 11.650                            | 95.000                        |
-| Mean [ms]                   | 51.089                            | 99.009                        |
-| Standard deviation          | 12.955                            | 0.319                         |
-| Confidence interval (at 95%)| $51.089 \pm 0.4867$               | $99.009 \pm 0.012$            |
+| **Statistical feature**       | **Value - Computing time task 2** | **Value - Cycle time task 2** |
+|:-----------------------------:|:-----------------------------------:|:-------------------------------:|
+| Max value [ms]                | 86.850                            | 105.000                       |
+| Min value [ms]                | 11.650                            | 95.000                        |
+| Mean [ms]                     | 51.089                            | 99.009                        |
+| Standard deviation            | 12.955                            | 0.319                         |
+| Confidence interval (at 95%)  | $51.089 \pm 0.4867$               | $99.009 \pm 0.012$            |
 
 
 And these statistical results are also highlighted on the following plotted results where it can be examined in more detail how the computing times for task 2 are distributed for the experiment done.
