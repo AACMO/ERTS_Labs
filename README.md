@@ -253,6 +253,7 @@ The results of programming this architecture with these tasks and these prioriti
 And also the video demos with the results for this exercise can be found at repository [here](/P4/Videos/P4_Ex_Demo1.mp4) and [here](/P4/Videos/P4_Ex_Demo_2.mp4).
 
 Finally, as additional request, it is necessary to ensure temporal correctness of the task where the control loop is performed (**TaskControlLoop**) to ensure it is executed each 100 ms because it is the most critical task here. 
+
 For this reason, it has been used in all tasks the function *vTaskDelayUntil()* from FreeRTOS library to be sure each task is called after the defined number of ms on this function arguments instead of wait the defined number of ms from the moment the last function call is finished. The first approach will ensure (if the task computing time is less than the defined task cycle time) the time between task executions will be always the task cycle time defined meanwhile the latter will wait the defined task cycle time after the function call is finished, leading to unpredictable cycle time for the task and time between task executions because it will depend on the computing time for each function call. Then, the approach using function *vTaskDelayUntil()* is way more precise and suits better for the criticism of control loop task that is expected to be called each exactly 100 ms, but it is necessary to ensure the task 2 computing time is never exceeding the giving cycle time period (100 ms). Next, in Arduino it has been programmed with *micros()* function some variables to gather times when each task start and when each task ends and in task **TaskSerialOutput** it has been added to serial output these timing values for each loop so that they can be copied on a *.txt* file that can be processed into Excel to get statistical data for the computing time of control loop task. 
 
 The conducted experiment is presented below:
@@ -268,15 +269,11 @@ Then, from experiment done the following statistical results are shown for task 
 | **Statistical feature**     | **Value - Computing time task 2** | **Value - Cycle time task 2** |
 |-----------------------------|-----------------------------------|-------------------------------|
 | Max value [ms]              | 86.850                            | 105.000                       |
-|-----------------------------|-----------------------------------|-------------------------------|
 | Min value [ms]              | 11.650                            | 95.000                        |
-|-----------------------------|-----------------------------------|-------------------------------|
 | Mean [ms]                   | 51.089                            | 99.009                        |
-|-----------------------------|-----------------------------------|-------------------------------|
 | Standard deviation          | 12.955                            | 0.319                         |
-|-----------------------------|-----------------------------------|-------------------------------|
 | Confidence interval (at 95%)| $51.089 \pm 0.4867$               | $99.009 \pm 0.012$            |
-|-----------------------------|-----------------------------------|-------------------------------|
+
 
 And these statistical results are also highlighted on the following plotted results where it can be examined in more detail how the computing times for task 2 are distributed for the experiment done.
 
