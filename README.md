@@ -277,7 +277,14 @@ Then, from experiment done the following statistical results are shown for task 
 
 And these statistical results are also highlighted on the following plotted results where it can be examined in more detail how the computing times for task 2 are distributed for the experiment done.
 
-![Demonstration exercise task2 temp correctness dist](/P4/Images/P4_Exercise_temp_correctness_dist.jpg)
-![Demonstration exercise task2 temp correctness hist](/P4/Images/P4_Exercise_temp_correctness_hist.jpg)
+<p align="center">
+  <img src="P4/Images/P4_Exercise_temp_correctness_dist.jpg" alt="Image" />
+</p>
+<p align="center">
+  <img src="P4/Images/P4_Exercise_temp_correctness_hist.jpg" alt="Image" />
+</p>
+
+<!--[Demonstration exercise task2 temp correctness dist](/P4/Images/P4_Exercise_temp_correctness_dist.jpg)-->
+<!--[Demonstration exercise task2 temp correctness hist](/P4/Images/P4_Exercise_temp_correctness_hist.jpg)-->
 
 Then, it is clear that the temporal correctness is ensured with precision and that task 2 will be executed without any problem at the specified cycle time. The deviation to 105 ms in some occasions as shown in the maximum value for the cycle time of task 2 might be caused by some timing inaccuracies with ticks on FreeRTOS because there is also some deviations to 95 ms in some occasions (shown by minimum value), but it has not been explored in depth. 
