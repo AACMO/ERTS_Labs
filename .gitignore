@@ -1,6 +1,5 @@
 # Ignore all pdfs at repo level
-*.pdf
-
+/*/*.pdf
 # Ignore report folder
 Report/
 C_Programming_Examples/
