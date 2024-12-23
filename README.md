@@ -285,3 +285,69 @@ And these statistical results are also highlighted on the following plotted resu
 </p>
 
 Then, it is clear that the temporal correctness is ensured with precision and that task 2 will be executed without any problem at the specified cycle time. The deviation to 105 ms in some occasions as shown in the maximum value for the cycle time of task 2 might be caused by some timing inaccuracies with ticks on FreeRTOS because there is also some deviations to 95 ms in some occasions (shown by minimum value), but it has not been explored in depth. 
+
+## Laboratory session 5: Programming the "Ball in Tube" system with Arduino IDE
+
+This exercise is devoted to implement different control strategies using the "Ball in Tube" system platform. This platform is an experimental prototype where a ping-pong ball is inside a methacrylate tube with a fan on the bottom and an ultrasonic distance measurement sensor on top so that it is aimed to place the ping-pong ball always within a distance from the lowest part of a slot placed on the tube. Therefore, the different control strategies will be tried to control in the best manner the system dynamics so that the ball is placed on a given setpoint. An example of the platform to be controlled is presented on the images below.
+
+<p align="center">
+  <img src="P5/Images/Ball_in_tube_platform.jpg" alt="Ball in Tube platform" width="200" height="400"/>
+  <img src="p5/Images/Ball_in_tube_scheme.jpg" alt="Ball in Tube scheme" width="200" height="400"/>
+</p>
+
+To achieve this purpose on session 5, it will be used the same Arduino Uno microcontroller (ATmega328P) as used on previous sessions and the Arduino IDE as code editor and to compile and upload the code to the device. Then, a set of 3 exercises using 3 different control strategies are proposed to control the system and to check the performance between them:
+
+1. *ON/OFF distance control:* It is first obtained PWM range in which the ball is within the tube slot part and the distance measured on each case by the ultrasonic sensor. Next, the computer fan is controlled depending on the distance sensed by the *HCSR04* ultrasonic sensor placed on top of the tube to the distance of tha ball to the lowest part of the tube slot to be around 15 cm constantly. Then, an hysteresis control is programmed with 2 cm hysteresis step that contains just 2 basic states as follows: 
+    - **The computer fan is ON:** When distance sensed by *HCSR04* is under 13 cm (15 cm + the hysteresis step). At this control state the PWM duty cycle signal sent to the fan is constantly set to a value of 140 through pin PB1 (Arduino Uno pin 9). This value of PWM is high to position the ball within the tube above the 17 cm again (the other hysteresis extreme) and for this reason it is considered as ON state.
+    - **The computer fan is OFF:** When the distance sensed by *HCSR04* is over 17 cm (15 cm + the hysteresis step). At this control state the PWM duty cycle signal sent to the fan is constantly set to a value of 115 through pin PB1 (Arduino Uno pin 9). This value of PWM is too small so that the ball position will be under the 13 cm again (the other hysteresis extreme) and for this reason it is considered as OFF state.
+
+    On this program distance sensor value is read through analog pin in Arduino Uno at pin 11 (pin PB3) and the conversion given on datasheet is done to convert the microseconds value obtained directly to centimeters.
+
+    The Arduino plotter snapshot with the test results for this exercise is found below for the triggering of the OFF state and for the triggering of the ON state for the PWM fan with this control respectively. It can be seen that it appropriately reacts against distance sensor reading from *HCSR04* and the system works as expected being stable around the setpoint of 15 cm constantly.
+
+    ![Demonstration exercise 1 ON](/P5/Images/Ex1_demo_ONOFF_Control.jpg)
+
+    The video demo with the results for this exercise can be found at repository [here](/P5/Videos/Ex1_ONOFF_demo.mp4).
+
+    Finally, all data obtained on this exercise to obtain the ranges of distances for the sensor and the PWM values that will rely always within the tube slot can be found at **Utils** folder inside the Excel sheet called *Linear_fit.xlsx*, from where the PWM values to be imposed on the ON/OFF control are found to ensure the ball is always within a given distance from the lowest part of the tube slot.
+  
+2. *Feedforward control:* On this exercise it is proposed first to characterize the input - output static response for the system and the dynamic response for the system and then implement with the input - output static response obtained a feedforward control using any regression method (linear on this case) to approximate the input - output static gain and have an initial basic control approach valid for all the PWM range of values and distances within the tube slot.
+   
+    To determine the input - output static and dynamic response of the computer fan when a PWM input signal is sent, it will be used the same approach as presented in laboratory session 2 where the distance sensor measurement is read for every PWM input given to the system. For that purpose, an incremental and decremental steps of 10 PWM values are programmed so that it is covered all range from 82 to 182 PWM signal value in increments and decrements to assess the difference on the system dynamics when applying both increments and decrements on the control signal on the system. Additionally, it is waited between steps 10 s to have the speed stabilized and get appropriate measurements that are sent inside the loop every 50 ms to the serial output monitor.  Hence, all output serial monitor data has been captured on a *txt* file called *BallResponse.txt* stored in **Utils** folder. 
+    
+    Finally, all data gathered is opened on an Excel and it is able to obtain the following results shown on the following snapshots for the temporal static and dynamic system  response respectively: 
+
+    ![Static response fan Ex5 upwards](/P5/Images/regression_feedforward.png)
+    ![Static response fan Ex5 downwards](/P5/Images/downward_reression.png)
+
+    Where it can be seen the slightly small difference on the input - output system dynamics due to the fact that the gravity effect is not necessary to be compensated on the downward dynamics so that the ball will always be on a lower distance wrt to the lowest part of the tube slot for a PWM value on a decremental step than the same PWM value applied during incremental steps. 
+    
+    And from given previous static response it has been possible to determine experimentally the static curve that relates the value of PWM to be input to the system to achieve a desired distance with respect to the lowest part of the tube slot as follows (only considered for all the range the upward dynamics):
+
+    <p align="center">
+      <img src="P5/Utils/dist_equation.jpg" alt="Image" />
+    </p>
+    
+    Next, the dynamic response of the fan is presented on the 2 following images for the analyzed data from the test done:
+
+    ![Dynamic response fan upwards](/P5/Images/upward_dyn.png)
+    ![Dynamic response fan downwards](/P5/Images/downward_dyn.png)
+    
+    And from where it can be obtained the response time for the system to be as the settling time, which in average it has been stablished to be $t_{ss}$ at 98\% equal to $t_{ss} =1.76s$ for the upward system dynamics and $t_{ss} =1.78s$ for the downward system dynamics. Thus, here the dynamics settling time is not really different in average, but the gravity effect has indeed significance on the difference between response when applying incremental or decremental PWM step values.
+
+    Finally, all data from where all these previous results are obtained can be found at **Utils** folder inside the Excel sheet called *upd_and_down_feedforward.xlsx* where serial monitor output data from Arduino is analyzed. Additionally, the video demo with the results gathering for the system identification can be found at repository [here](/P5/Videos/Ex2_Feedforward_SysIdent.mp4).
+
+    Next, with all this data and the static curve obtained relating the PWM value and the desired distance with respect to the lowest part of the tube slot, this control approach will be tested using two different setpoint scenarios: 
+      - Scenario 1: setpoint varies every 10 s between 20 and 10. Then a PWM value is sent via pin 9 (PB1) to the computer fan to track the distance setpoint that is varying constantly between this 2 points and it is read on each control loop (every 50 ms) the distance read from the ultrasonic sensor on pin 11 (PB3).
+      - Scenario 2: setpoint varies every 10 s between 25 and 15. Then a PWM value is sent via pin 9 (PB1) to the computer fan to track the distance setpoint that is varying constantly between this 2 points and it is read on each control loop (every 50 ms) the distance read from the ultrasonic sensor on pin 11 (PB3).
+
+    The results of this simple exercise can be found on the following snapshots from Arduino plotter for both given setpoint scenarios depicted, displaying the setpoint speed against the sensor reading at each control loop. The response obtained is quite satisfying, but the controller fails when reducing the steady state error since there is always a constant shift between the setpoint and the final speed value. 
+
+    ![Demonstration fan speed Ex2 setpoint 1](/P5/Images/Ex2_demo_ff_control_sp_20_10.jpg)
+    ![Demonstration fan speed Ex2 setpoint 1](/P5/Images/Ex2_demo_ff_control_sp_25_15.jpg)
+
+    The system seems to work better when tracking on a scenario than in the other, but in overall there is a constant error to be tackled with other control approaches different than the feedforward, which cannot do it better than this. 
+
+    The video demo with the results for this exercise can be found at repository [here](/P5/Videos/Ex2_Feedforward_Demo.mp4).
+
+## Laboratory session 6: Programming the ``Ball in Tube" system with MATLAB
