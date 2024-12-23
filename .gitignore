@@ -5,6 +5,7 @@
 *.eep
 *.elf
 *.hex
+*.slxc
 /*/Code/**/*_ert_rtw
 /*/Code/slprj
 
