@@ -1,5 +1,13 @@
 # Ignore all pdfs at repo level
 /*/*.pdf
+
+# Ignore all building artifacts from MATLAB / Simulink
+*.eep
+*.elf
+*.hex
+/*/Code/**/*_ert_rtw
+/*/Code/slprj
+
 # Ignore report folder
 Report/
 C_Programming_Examples/
