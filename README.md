@@ -292,7 +292,7 @@ This exercise is devoted to implement different control strategies using the "Ba
 
 <p align="center">
   <img src="P5/Images/Ball_in_tube_platform.jpg" alt="Ball in Tube platform" width="200" height="400"/>
-  <img src="p5/Images/Ball_in_tube_scheme.jpg" alt="Ball in Tube scheme" width="200" height="400"/>
+  <img src="P5/Images/Ball_in_tube_scheme.jpg" alt="Ball in Tube scheme" width="200" height="400"/>
 </p>
 
 To achieve this purpose on session 5, it will be used the same Arduino Uno microcontroller (ATmega328P) as used on previous sessions and the Arduino IDE as code editor and to compile and upload the code to the device. Then, a set of 3 exercises using 3 different control strategies are proposed to control the system and to check the performance between them:
