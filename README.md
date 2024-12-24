@@ -356,9 +356,9 @@ To achieve this purpose on session 5, it will be used the same Arduino Uno micro
 
     - **P control:** A simple proportional control gain has been tuned to add to the control action a factor that depends on the error between the actual sensor reading and the distance setpoint for the ping-pong ball. Thus, the new control action as a PWM value includes a continuous time P controller with the following equation: 
 
-      $$u[PWM]=feedforward_{action}+P_{action}=0.2678\cdot PWM_Value-19.128 + K_p\cdot dist\_err$$
+      $$u[PWM]=feedforward_{action}+P_{action}=0.2678\cdot PWM\_{Value}-19.128 + K_p\cdot dist\_{err}$$
 
-      Where the gain $K_p$ must be tuned experimentally for the best performance and the variable $dist\_err$ on the control action stands for the error between the actual distance setpoint and the ultrasonic sensor measured distance both with respect to the lowest part of the tube slot. 
+      Where the gain $K_p$ must be tuned experimentally for the best performance and the variable $dist\_{err}$ on the control action stands for the error between the actual distance setpoint and the ultrasonic sensor measured distance both with respect to the lowest part of the tube slot. 
       
       Hence, after tuning the $K_p$ parameter experimentally and with a sample time of 50ms for the control loop, it is obtained an optimal $K_p=1.0$ for the proportional controller. Therefore, with this controller and control action used, the presented results on the next image with respect to the setpoint between 25 - 15 cm to show the obtained control with this new feedforward and state feedback control approach.
       
