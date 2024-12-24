@@ -343,11 +343,54 @@ To achieve this purpose on session 5, it will be used the same Arduino Uno micro
 
     The results of this simple exercise can be found on the following snapshots from Arduino plotter for both given setpoint scenarios depicted, displaying the setpoint speed against the sensor reading at each control loop. The response obtained is quite satisfying, but the controller fails when reducing the steady state error since there is always a constant shift between the setpoint and the final speed value. 
 
-    ![Demonstration fan speed Ex2 setpoint 1](/P5/Images/Ex2_demo_ff_control_sp_20_10.jpg)
-    ![Demonstration fan speed Ex2 setpoint 1](/P5/Images/Ex2_demo_ff_control_sp_25_15.jpg)
+    ![Demonstration ball distance Ex2 setpoint 1](/P5/Images/Ex2_demo_ff_control_sp_20_10.jpg)
+    ![Demonstration ball distance Ex2 setpoint 1](/P5/Images/Ex2_demo_ff_control_sp_25_15.jpg)
 
     The system seems to work better when tracking on a scenario than in the other, but in overall there is a constant error to be tackled with other control approaches different than the feedforward, which cannot do it better than this. 
 
     The video demo with the results for this exercise can be found at repository [here](/P5/Videos/Ex2_Feedforward_Demo.mp4).
+
+3. *Feedforward control + feedback control:* The last control algorithm proposed attempts to tackle the problems presented on exercise 2 specially and to ensure a setpoint is tracked without zero steady state error. However, on this section it will be divided in 2 different steps, doing in the first one a simple P controller with a proportional action only and on a second step a PI controller with both the proportional and the integral control actions. On this manner, it can be both assessed and compared to ensure if it is necessary add at least an integral control action to reduce the error to 0 and its effect. The PID controller will not be designed since the trade - off between tuning effort and the performance improvement is really significant for the benefits it will have. 
+    
+    Consequently, this section will be divided into the 2 different steps where to test the two setpoint scenarios given in previous exercise with the feedforward:
+
+    - **P control:** A simple proportional control gain has been tuned to add to the control action a factor that depends on the error between the actual sensor reading and the distance setpoint for the ping-pong ball. Thus, the new control action as a PWM value includes a continuous time P controller with the following equation: 
+
+      $$u[PWM]=feedforward_{action}+P_{action}=0.2678\cdot PWM_Value-19.128 + K_p\cdot dist\_err$$
+
+      Where the gain $K_p$ must be tuned experimentally for the best performance and the variable $dist\_err$ on the control action stands for the error between the actual distance setpoint and the ultrasonic sensor measured distance both with respect to the lowest part of the tube slot. 
+      
+      Hence, after tuning the $K_p$ parameter experimentally and with a sample time of 50ms for the control loop, it is obtained an optimal $K_p=1.0$ for the proportional controller. Therefore, with this controller and control action used, the presented results on the next image with respect to the setpoint between 25 - 15 cm to show the obtained control with this new feedforward and state feedback control approach.
+      
+      ![Demonstration ball distance Ex3-P setpoint 1](/P5/Images/Ex3_demo_ff_sf_control_sp_25_15.jpg)
+
+      From results it can be noted there is still some steady state error when applying decremental PWM values on the system meanwhile the system dynamics for the highest setpoint is adjusted properly with a small steady state error that in some cases is almost 0. This situation is due to the fact that the feedforward control has been created using only the input - output static response on the system when applying incremental PWM values, so that the gravity effect occurring on the decremental PWM values is not being into consideration obtaining errors on the output response. For this reason, the PI controller will be necessary to correct this permanent error on the steady state with the integral control effort.
+
+      The video demo with the results for this exercise can be found at repository [here](https://github.com/AACMO/ERTS_Labs/blob/main/P5/Videos/Ex3_Demo_ff%2Bsf_control_sp20_10.mp4) and [here](https://github.com/AACMO/ERTS_Labs/blob/main/P5/Videos/Ex3_Demo_ff%2Bsf_control_sp25_15.mp4) for the P control demonstration for the setpoint between 20 - 10 and the setpoint between 25 - 15 respectively.
+
+    - **PI control:** A controller using a proportional and integral control action must be tuned to add to the initial control the capability to track any given setpoint and converge to 0 steady state error if enough time is given to the system. This controller must be also able to correct at least the error induced by constant disturbances such as the obstruction with the hand of the lowest part of the tube slot behind the ping-pong ball. Thus, all this situations will be checked on this section considering the new control action as a PWM value that includes both a continuous time PI controller and a feedforward gain with the following equation:   
+
+      $$u[PWM]=feedforward_{action}+PI_{action}=0.2678\cdot PWM_Value-19.128 + K_p\cdot dist\_err+K_i\cdot sum\_err$$
+
+      Where again the gains $K_p$ and $K_i$ must be tuned experimentally for the best performance and the variable $dist\_err$ on the control action stands for the error between the actual distance setpoint and the ultrasonic sensor measured distance both with respect to the lowest part of the tube slot, meanwhile the variable $sum\_err$ is the accumulated $dist\_err$ along all control time for the integral control action. However, to avoid accumulating big errors that will alter the control action and provoke non-desired behaviors, the variable $sum\_err$ for the control loop has been saturated on the upper and lower bounds considering the maximum distance for the tube slot on the system (30 cm from the ultrasonic sensor) as follows: 
+
+        - Upper bound for **$sum\_err$**:  $sum\_err \leq5\cdot MAX\_DIST$
+        - Lower bound for **$sum\_err$**:  $sum\_err \geq-3\cdot MAX\_DIST$
+      
+      With $MAX\_DIST = 30 cm$, which is the maximum distance between the ultrasonic sensor and the ping-pong ball to be within the tube slot. Note that the limits are not symmetric to compensate the bigger error due to the gravity effect that occurs when the PWM value sent to the computer fan is decremented. 
+
+      Hence, after tuning the $K_p$ and $K_i$ parameters experimentally and with a sample time of 50ms for the control loop, it is obtained an optimal $K_p=1.0$ and $K_i=0.2$ for the PI controller proposed. Therefore, with this controller and control action used, the presented results on the next images with respect to the both setpoint scenarios between 20 - 10 and between 25 - 15 cm to show the obtained control with this new feedforward and state feedback control approach using a PI action.
+      
+      ![Demonstration ball distance Ex3-PI setpoint 1](/P5/Images/Ex3_demo_ff_sf_PI_sp_20_10_new_sumerr.jpg)
+      ![Demonstration ball distance Ex3-PI setpoint 2](/P5/Images/Ex3_demo_ff_sf_PI_sp_25_15_new_sumerr.jpg)
+
+      From results it is clear now the system is able to track any given setpoint with zero steady state error in both given setpoint scenarios, despite having some noise on the ultrasonic sensor distance measurement. However, the tuned parameters allowed to have a PI control that is moving all the time the system to the reference without being too much reactive against noise given by the sensor. 
+
+      Last, it is checked the performance of the PI controller when the lowest part of the tube is obstructed with the hand, adding some disturbance on the system in both scenarios and in both setpoints for each scenarios. The results presented on the following Figures yield that the controller designed is able converge to 0 steady state error if enough time is given with the same reference despite adding constant disturbances as the ones commented. Thus, the control is robust against this type of disturbances added as expected.
+
+      ![Demonstration ball distance Ex3-PI_dist setpoint 1](/P5/Images/Ex3_demo_ff_sf_PI_sp_20_10_new_sumerr_dist.jpg)
+      ![Demonstration ball distance Ex3-PI_dist setpoint 2](/P5/Images/Ex3_demo_ff_sf_PI_sp_25_15_new_sumerr_dist.jpg)
+
+      The video demo with the results for this exercise can be found at repository [here](https://github.com/AACMO/ERTS_Labs/blob/main/P5/Videos/Ex3_Demo_ff%2BPI_control_sp25_15.mp4) for the PI demonstration without disturbances and [here](https://github.com/AACMO/ERTS_Labs/blob/main/P5/Videos/Ex3_Demo_ff%2BPI_control_sp20_10_dist.mov) and [here](https://github.com/AACMO/ERTS_Labs/blob/main/P5/Videos/Ex3_Demo_ff%2BPI_control_sp25_15_dist.mov) for the PI control demonstration with the disturbances included for the setpoint between 20 - 10 and the setpoint between 25 - 15 respectively.
 
 ## Laboratory session 6: Programming the ``Ball in Tube" system with MATLAB
