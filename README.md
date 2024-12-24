@@ -401,7 +401,19 @@ Therefore, this model - based design approach is more flexible and focused on ea
 
 Hence, this exercise will attempt to replicate all controls done in previous session for the **"Ball in Tube"** system but now using this other approach to ensure it can be obtained the same results with this higher level programming language that is more user friendly. Finally, it must be noted that all pin configurations used on this session will be exactly the same as explained on previous session since the setup is the same, but the blocks in MATLAB will embed the pins configuration instead of being on the code.
 
-Then, a set of 3 exercises using the same 3 different control strategies as proposed in previous session will be solved here:
+### Initial requirements: 
+
+To complete this laboratory session, it will be necessary to first of all install all necessary programs and dependencies listed below: 
+
+1. MATLAB. To get the framework where it will be all programed. If linked to an educational institution, you can download the program and check if you can have a student license from [here](https://login.mathworks.com/embedded-login/signin.html?cid=wdnl&uri=https%3A%2F%2Fes.mathworks.com%2Fdownloads%2F). It is only necessary to download file and click on the executable.
+2. MATLAB Support Package for Arduino. This package allows you to program scripts directly in MATLAB that can be compiled and loaded on the Arduino target as it is done with Arduino IDE. It contains several functions that are specific for Arduino boards. Then, once MATLAB is installed, you will need to install this from the menu option *ADD-ONS->Get hardware support package* and look there for this package to be downloaded and installed
+3. Simulink Support Package for Arduino. This package allows to program and create Simulink models using the built - in blocks from Arduino library that helps you setting up hardware and software configurations for the Arduino target to be programmed. Follow the same instructions as per the installation of the **MATLAB Support Package for Arduino** and download and install this Add-On from MATLAB menus. 
+
+Once all this requirements are fulfilled, it will be necessary to reboot your computer before starting MATLAB with all complements added. 
+
+### Proposed exercises:
+
+A set of 3 exercises using the same 3 different control strategies as proposed in previous session will be solved here:
 
 1. *ON/OFF distance control:* Under the same assumptions as in previous laboratory 5 session, it is first obtained PWM range in which the ball is within the tube slot part and the distance measured on each case by the ultrasonic sensor. The model created in Simulink for this part of the exercise is shown below.
 
