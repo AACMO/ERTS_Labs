@@ -374,8 +374,8 @@ To achieve this purpose on session 5, it will be used the same Arduino Uno micro
 
       Where again the gains $K_p$ and $K_i$ must be tuned experimentally for the best performance and the variable $dist\_{err}$ on the control action stands for the error between the actual distance setpoint and the ultrasonic sensor measured distance both with respect to the lowest part of the tube slot, meanwhile the variable $sum\_{err}$ is the accumulated $dist\_{err}$ along all control time for the integral control action. However, to avoid accumulating big errors that will alter the control action and provoke non-desired behaviors, the variable $sum\_{err}$ for the control loop has been saturated on the upper and lower bounds considering the maximum distance for the tube slot on the system (30 cm from the ultrasonic sensor) as follows: 
 
-        - Upper bound for **$sum\_{err}$**:  $sum\_{err} \leq5\cdot \text{MAX_DIST}$
-        - Lower bound for **$sum\_{err}$**:  $sum\_{err} \geq-3\cdot \text{MAX_DIST}$
+        - Upper bound for **$sum\_{err}$**:  $sum\_{err} \leq5\cdot MAX\_DIST$
+        - Lower bound for **$sum\_{err}$**:  $sum\_{err} \geq-3\cdot MAX\_DIST$
       
       With MAX_DIST = 30 cm, which is the maximum distance between the ultrasonic sensor and the ping-pong ball to be within the tube slot. Note that the limits are not symmetric to compensate the bigger error due to the gravity effect that occurs when the PWM value sent to the computer fan is decremented. 
 
